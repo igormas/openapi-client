@@ -11,9 +11,8 @@ function genTypesFile(spec, options) {
     const lines = [];
     util_1.join(lines, renderHeader());
     util_1.join(lines, renderDefinitions(spec, options));
-    const outFileName = `${options.outTypesFileName || 'types'}.${options.language}`;
     return {
-        path: `${options.outDir}/${outFileName}`,
+        path: `${options.outDir}/types.${options.language}`,
         contents: lines.join('\n')
     };
 }
@@ -28,7 +27,7 @@ function renderHeader() {
 function renderDefinitions(spec, options) {
     const isTs = (options.language === 'ts');
     const defs = spec.definitions || {};
-    const typeLines = isTs ? [`namespace ${options.namespace || 'api'} {`] : undefined;
+    const typeLines = isTs ? [`namespace api {`] : undefined;
     const docLines = [];
     Object.keys(defs).forEach(name => {
         const def = defs[name];
@@ -48,10 +47,8 @@ function renderDefinitions(spec, options) {
     return isTs ? typeLines.concat(docLines) : docLines;
 }
 function renderTsType(name, def, options) {
-    name = name
-        .replace(/«/g, 'Oftype')
-        .replace(/»/g, 'Endoftype')
-        .replace(/,/g, 'Andtype');
+    name = name.replace('«', 'Of');
+    name = name.replace('»', '');
     if (def.allOf)
         return renderTsInheritance(name, def.allOf, options);
     if (def.type !== 'object') {
@@ -94,17 +91,13 @@ function renderTsInheritance(name, allOf, options) {
 function renderTsTypeProp(prop, info, required) {
     const lines = [];
     const type = support_1.getTSParamType(info, true);
-    let format = '';
-    if (info.format) {
-        format = ` // ${info.format}`;
-    }
     if (info.description) {
         lines.push(`${support_1.SP}/**`);
         lines.push(`${support_1.SP}${support_1.DOC}` + (info.description || '').trim().replace(/\n/g, `\n${support_1.SP}${support_1.DOC}${support_1.SP}`));
         lines.push(`${support_1.SP} */`);
     }
     const req = required ? '' : '?';
-    lines.push(`${support_1.SP}${prop}${req}: ${type}${support_1.ST}${format}`);
+    lines.push(`${support_1.SP}${prop}${req}: ${type}${support_1.ST}`);
     return lines;
 }
 function renderTsDefaultTypes() {
