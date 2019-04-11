@@ -20,8 +20,9 @@ export function genTypesFile(spec: ApiSpec, options: ClientOptions) {
     const lines = []
     join(lines, renderHeader())
     join(lines, renderDefinitions(spec, options))
+    const outFileName = options.outTypesFileName ?? `types.${options.language}`;
     return {
-        path: `${options.outDir}/types.${options.language}`,
+        path: `${options.outDir}/${outFileName}`,
         contents: lines.join('\n')
     }
 }
@@ -37,7 +38,7 @@ function renderHeader() {
 function renderDefinitions(spec: ApiSpec, options: ClientOptions): string[] {
     const isTs = (options.language === 'ts')
     const defs = spec.definitions || {}
-    const typeLines = isTs ? [`namespace api {`] : undefined
+    const typeLines = isTs ? [`namespace ${options.namespace || 'api'} {`] : undefined
     const docLines = []
     Object.keys(defs).forEach(name => {
         const def = defs[name];
