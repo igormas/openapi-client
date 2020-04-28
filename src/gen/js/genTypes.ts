@@ -38,7 +38,7 @@ function renderHeader() {
 function renderDefinitions(spec: ApiSpec, options: ClientOptions): string[] {
     const isTs = (options.language === 'ts')
     const defs = spec.definitions || {}
-    const typeLines = isTs ? [`namespace ${options.namespace || 'api'} {`] : undefined
+    const typeLines = isTs ? [`declare namespace ${options.namespace || 'api'} {`] : undefined
     const docLines = []
     Object.keys(defs).forEach(name => {
         const def = defs[name];
