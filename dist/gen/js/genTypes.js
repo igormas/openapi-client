@@ -11,7 +11,7 @@ function genTypesFile(spec, options) {
     const lines = [];
     util_1.join(lines, renderHeader());
     util_1.join(lines, renderDefinitions(spec, options));
-    const outFileName = options.outTypesFileName ?  ? `types.${options.language}` :  : ;
+    const outFileName = options.outTypesFileName ? options.outTypesFileName : `types.${options.language}`;
     return {
         path: `${options.outDir}/${outFileName}`,
         contents: lines.join('\n')

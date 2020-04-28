@@ -20,7 +20,7 @@ export function genTypesFile(spec: ApiSpec, options: ClientOptions) {
     const lines = []
     join(lines, renderHeader())
     join(lines, renderDefinitions(spec, options))
-    const outFileName = options.outTypesFileName ?? `types.${options.language}`;
+    const outFileName = options.outTypesFileName ? options.outTypesFileName : `types.${options.language}`;
     return {
         path: `${options.outDir}/${outFileName}`,
         contents: lines.join('\n')
