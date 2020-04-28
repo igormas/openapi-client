@@ -22,11 +22,15 @@ function verifyOptions(options) {
     }
 }
 function gen(spec, options) {
-    util_1.removeOldFiles(options);
+    if (!options.skipOldFileRemoval) {
+        util_1.removeOldFiles(options);
+    }
     const operations = spec_1.getOperations(spec);
     switch (options.language) {
-        case 'js': return js_1.default(spec, operations, options);
-        case 'ts': return js_1.default(spec, operations, options);
+        case 'js':
+            return js_1.default(spec, operations, options);
+        case 'ts':
+            return js_1.default(spec, operations, options);
         default:
             throw new Error(`Language '${options.language}' not supported`);
     }
