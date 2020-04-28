@@ -1,6 +1,6 @@
 import {
     writeFileSync,
-    join
+    join,
 } from '../util'
 import {
     DOC,
